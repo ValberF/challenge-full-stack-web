@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <template>
   <v-app id="Home">
     <v-container>
@@ -29,7 +30,12 @@
       :items="filteredList"
       :items-per-page="10"
       class="elevation-1"
-    ></v-data-table>
+    >
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon small class="mr-2" @click="redirectEdit(item)"> mdi-pencil </v-icon>
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      </template>
+    </v-data-table>
   </v-app>
 </template>
 
@@ -52,7 +58,7 @@ export default {
         { text: "Nome", align: "center", value: "student_name" },
         { text: "E-mail", align: "center", value: "student_email" },
         { text: "CPF", align: "center", value: "student_cpf" },
-        { text: "Ações", align: "center", value: "action" },
+        { text: "Ações", value: "actions" },
       ],
       desserts: [],
     };
@@ -69,13 +75,15 @@ export default {
           );
         });
 
-        console.log(res.data);
-
         this.desserts = res.data;
       });
     },
     redirectRegister() {
       this.$router.push({ path: "/register" });
+    },
+    redirectEdit(item) {
+      this.$store.commit('setStudent', item)
+      this.$router.push({ path: "/edit" });
     },
   },
   mounted() {
