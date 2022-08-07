@@ -1,18 +1,93 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app id="Home">
+    <v-container>
+      <v-row justify="space-around">
+        <v-col cols="12" sm="6" md="6">
+          <v-text-field
+            v-model="search"
+            label="Digite sua busca"
+            solo
+            hide-details
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-btn
+            @click="redirectRegister"
+            color="primary"
+            height="50"
+            width="200"
+            elevation="2"
+            >Cadastrar Aluno</v-btn
+          >
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <v-data-table
+      app
+      :headers="headers"
+      :items="filteredList"
+      :items-per-page="10"
+      class="elevation-1"
+    ></v-data-table>
+  </v-app>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import axios from "axios";
+import { baseApiUrl } from "../global";
+import { formatCPF } from "../utils/functions";
 
 export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
-  }
-}
+  name: "HomeView",
+  data() {
+    return {
+      search: "",
+      headers: [
+        {
+          text: "Registro Acadêmico",
+          align: "center",
+          value: "student_academic_record",
+        },
+        { text: "Nome", align: "center", value: "student_name" },
+        { text: "E-mail", align: "center", value: "student_email" },
+        { text: "CPF", align: "center", value: "student_cpf" },
+        { text: "Ações", align: "center", value: "action" },
+      ],
+      desserts: [],
+    };
+  },
+  methods: {
+    getStudent() {
+      axios.get(`${baseApiUrl}/student`).then((res) => {
+        res.data.forEach((element) => {
+          element.student_cpf = formatCPF(element.student_cpf);
+          element.action = (
+            <div>
+              <span>editar</span> <span>excluir</span>
+            </div>
+          );
+        });
+
+        console.log(res.data);
+
+        this.desserts = res.data;
+      });
+    },
+    redirectRegister() {
+      this.$router.push({ path: "/register" });
+    },
+  },
+  mounted() {
+    this.getStudent();
+  },
+  computed: {
+    filteredList() {
+      return this.desserts.filter((element) => {
+        let name = element.student_name;
+        return name.toLowerCase().includes(this.search.toLowerCase());
+      });
+    },
+  },
+};
 </script>
