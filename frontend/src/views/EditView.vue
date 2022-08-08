@@ -1,5 +1,8 @@
 <template>
-  <v-app id="Edit">
+  <v-card id="Edit">
+    <v-card-title class="text-h5" style="background-color: #363638; color: #fff"
+      >Editar aluno: {{ student.student_name }}</v-card-title
+    >
     <v-form>
       <v-container>
         <v-row justify="center">
@@ -63,7 +66,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-app>
+  </v-card>
 </template>
 
 <script>
