@@ -67,7 +67,7 @@ module.exports = (app) => {
       if (studentFromDB)
         return res
           .status(400)
-          .json({ message: "Este aluno já está cadastrado", statusCode: 400 });
+          .json({ message: "Registro Acadêmico já existe!", statusCode: 400 });
 
       const finalstudent = await knex("student").insert({
         student_name,

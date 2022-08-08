@@ -4,7 +4,7 @@ exports.up = function (knex) {
     table.string("student_name").notNull();
     table.string("student_email").notNull();
     table.string("student_academic_record").unique().notNull();
-    table.string("student_cpf").notNull();
+    table.string("student_cpf").unique().notNull();
   });
 };
 
