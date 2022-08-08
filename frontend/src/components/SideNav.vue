@@ -8,7 +8,12 @@
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item v-for="[icon, text] in links" :key="icon" link>
+        <v-list-item
+          v-for="[icon, text] in links"
+          :key="icon"
+          @click="redirectPage(text)"
+          link
+        >
           <v-list-item-icon>
             <v-icon>{{ icon }}</v-icon>
           </v-list-item-icon>
@@ -27,8 +32,17 @@ export default {
   name: "SideNav",
   data: () => ({
     drawer: null,
-    links: [["mdi-account", "Alunos"]],
+    links: [
+      ["mdi-account", "Alunos"],
+      ["mdi-help", "Sobre"],
+    ],
   }),
+  methods: {
+    redirectPage(text) {
+      if (text == "Alunos") this.$router.push({ path: "/" });
+      if (text == "Sobre") this.$router.push({ path: "/about" });
+    },
+  },
 };
 </script>
 

@@ -91,6 +91,7 @@ export default {
       axios
         .post(`${baseApiUrl}/student`, this.student)
         .then(() => {
+          alert("Aluno criado com sucesso!")
           this.$router.push({ path: "/" });
         })
         .catch((err) => {
